@@ -20,6 +20,7 @@ def backrgound_draw():
         vco_y1 = 580
         vco_x2 = 80 + (64*i)
         vco_y2 = 60
+        # Hotizontal Line
         hco_x1 = 80
         hco_y1 = 60 + (52*i)
         hco_x2 = 720
