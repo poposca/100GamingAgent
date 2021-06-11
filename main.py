@@ -5,7 +5,7 @@ background = pyglet.graphics.OrderedGroup(0)
 foreground = pyglet.graphics.OrderedGroup(1)
 
 
-def backrgound_draw():
+def background_draw():
     mybatch = pyglet.graphics.Batch()
 
     width = 2    
@@ -36,12 +36,30 @@ def backrgound_draw():
     mybatch.draw()
 
 
+def tokens_draw():
+    mybatch2 = pyglet.graphics.Batch()
+    label1 = pyglet.text.Label('X',
+                              font_name='Noto Sans',
+                              font_size=24,
+                              x=80+32+(64*(1-1)), y=60+28+(52*(1-1)),
+                              anchor_x='center', anchor_y='center',
+                              batch=mybatch2, group=foreground)
+    label2 = pyglet.text.Label('O',
+                                font_name='Noto Sans',
+                                font_size=24,
+                                x=80+32+(64*(3-1)), y=60+28+(52*(4-1)),
+                                anchor_x='center', anchor_y='center',
+                                batch=mybatch2, group=foreground)
+    mybatch2.draw()
+
+
 window = pyglet.window.Window(800, 600, "10x10 Tic Tac Toe")
-pyglet.gl.glClearColor(0.1,0.1,0.14,1) 
+pyglet.gl.glClearColor(0.1,0.1,0.14,1)
 
 @window.event
 def on_draw():
     window.clear()
-    backrgound_draw()
+    background_draw()
+    tokens_draw()
 
 pyglet.app.run()
