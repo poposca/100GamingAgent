@@ -1,6 +1,7 @@
 import pyglet
 from pyglet.window import mouse
 from drawings import *
+from math import floor
 
 import globals
 globals.init()
@@ -30,6 +31,20 @@ label2 = pyglet.text.Label('O',
                               anchor_x='center', anchor_y='center', group=globals.foreground)
 #--------------------------------------------
 
+#---Utils---
+#-------------------------------------------
+def calculate_cells(x,y):
+    new_x = x - globals.board_start_x
+    new_y = y - globals.board_start_y
+
+    j = floor(new_x / globals.cell_size_x)
+    i = floor(new_y / globals.cell_size_y)
+    
+    return i,j
+
+#-------------------------------------------
+
+
 #---EVENTOS---
 #--------------------------------------------
 @window.event
@@ -47,7 +62,8 @@ def on_mouse_press(x, y, button, modifiers):
         turn_redraw(label2, change_turn())
         if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y):
             print("Clicked inside the board")
-            # i,j = calculate_cells(x,y)
+            i,j = calculate_cells(x,y)
+            print("i = ", i, " j = ", j)
 #--------------------------------------------
 
 pyglet.app.run()
