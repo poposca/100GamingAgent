@@ -60,10 +60,11 @@ def on_mouse_press(x, y, button, modifiers):
     if button == mouse.LEFT:
         if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y):
             i,j = calculate_cells(x,y)
-            token_activate(globals.tokens[globals.turn], j, i)
-            globals.board[i][j] = globals.turn
-            change_turn()
-            turn_redraw(label2)
+            if (globals.board[i][j] == -1):
+                token_activate(globals.tokens[globals.turn], j, i)
+                globals.board[i][j] = globals.turn
+                change_turn()
+                turn_redraw(label2)
         #print(globals.board)
 #--------------------------------------------
 
