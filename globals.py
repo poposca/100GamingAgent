@@ -2,6 +2,7 @@ import pyglet
 
 def init():
     global turn
+    global board
     global background
     global foreground
     global board_start_x
@@ -14,7 +15,7 @@ def init():
     global on_board_tokens
     global tokens_patch
 
-    turn = 0
+    turn = 0    # For all purposes, 0->"O", 1->"X"
     tokens = ["O","X"]
     
     on_board_tokens = []
@@ -30,3 +31,5 @@ def init():
     
     cell_size_x     = 64
     cell_size_y     = 52
+
+    board = [[-1 for i in range(10)] for i in range(10)]
