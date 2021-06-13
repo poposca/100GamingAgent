@@ -51,19 +51,18 @@ def calculate_cells(x,y):
 def on_draw():
     window.clear()
     background_draw()
-    token_draw('X', 1, 1)
-    token_draw('O', 3, 5)
+    cells_redraw()
     main_label.draw()
     label2.draw()
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
     if button == mouse.LEFT:
-        turn_redraw(label2, change_turn())
         if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y):
-            print("Clicked inside the board")
             i,j = calculate_cells(x,y)
-            print("i = ", i, " j = ", j)
+            token_activate(globals.tokens[globals.turn], j, i)
+            change_turn()
+            turn_redraw(label2)
 #--------------------------------------------
 
 pyglet.app.run()

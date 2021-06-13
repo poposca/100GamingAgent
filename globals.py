@@ -10,8 +10,15 @@ def init():
     global board_end_y
     global cell_size_x
     global cell_size_y
+    global tokens
+    global on_board_tokens
+    global tokens_patch
 
-    turn = 1
+    turn = 0
+    tokens = ["O","X"]
+    
+    on_board_tokens = []
+    tokens_patch =  pyglet.graphics.Batch()
     
     background = pyglet.graphics.OrderedGroup(0)
     foreground = pyglet.graphics.OrderedGroup(1)

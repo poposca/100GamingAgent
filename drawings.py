@@ -34,19 +34,20 @@ def background_draw():
      
     mybatch.draw()
 
+def cells_redraw():
+    if len(globals.on_board_tokens) >= 1:
+        globals.tokens_patch.draw()        
 
-def token_draw(char :str, board_posx :int, board_posy :int):
+
+def token_activate(char :str, board_posx :int, board_posy :int):
     label1 = pyglet.text.Label(char,
                               font_name='Noto Sans',
                               font_size=24,
-                              x=80+32+(64*board_posx), y=60+28+(52*board_posy),
-                              anchor_x='center', anchor_y='center', group=globals.foreground)
-    label1.draw()
+                              x=globals.board_start_x+(globals.cell_size_x/2)+(globals.cell_size_x*board_posx),
+                              y=globals.board_start_y+(globals.cell_size_y/2)+(globals.cell_size_y*board_posy),
+                              anchor_x='center', anchor_y='center',
+                              batch = globals.tokens_patch, group=globals.foreground)
+    globals.on_board_tokens.append(label1)
 
-def turn_redraw(turnlabel, turn ):
-    if (turn == 0):
-        char = 'O'
-    elif (turn == 1):
-        char = 'X'
-
-    turnlabel.text = char
+def turn_redraw(turnlabel):
+    turnlabel.text = globals.tokens[globals.turn]
