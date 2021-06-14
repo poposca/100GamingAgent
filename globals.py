@@ -1,4 +1,5 @@
 import pyglet
+import numpy as np
 
 def init():
     global turn
@@ -32,4 +33,4 @@ def init():
     cell_size_x     = 64
     cell_size_y     = 52
 
-    board = [[-1 for i in range(10)] for i in range(10)]
+    board = np.full((10,10), -1, dtype=int)

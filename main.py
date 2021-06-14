@@ -6,6 +6,8 @@ from math import floor
 import globals
 globals.init()
 
+Q = {} # Dyctionary with the board state as key and arrays of reward as values
+
 def change_turn():
     globals.turn =  globals.turn ^ 1
     return globals.turn
@@ -44,6 +46,9 @@ def calculate_cells(x,y):
 
 def is_legal_move(pos_i, pos_j):
     return globals.board[pos_i][pos_j] == -1
+
+def get_board_hash():
+    return '0'
 #-------------------------------------------
 
 
