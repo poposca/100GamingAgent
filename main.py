@@ -2,10 +2,12 @@ import pyglet
 from pyglet.window import mouse
 from drawings import *
 from math import floor
+import numpy as np
 
 import globals
 globals.init()
 
+Q_init_val = 0.6
 Q = {} # Dyctionary with the board state as key and arrays of reward as values
 
 def change_turn():
@@ -48,7 +50,9 @@ def is_legal_move(pos_i, pos_j):
     return globals.board[pos_i][pos_j] == -1
 
 def get_board_hash():
-    return '0'
+    temp_array  = globals.board.flatten()
+    temp_string = "".join(map(str, temp_array))
+    print(temp_string)
 #-------------------------------------------
 
 
