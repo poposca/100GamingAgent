@@ -42,6 +42,8 @@ def calculate_cells(x,y):
     
     return i,j
 
+def is_legal_move(pos_i, pos_j):
+    return globals.board[pos_i][pos_j] == -1
 #-------------------------------------------
 
 
@@ -60,7 +62,7 @@ def on_mouse_press(x, y, button, modifiers):
     if button == mouse.LEFT:
         if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y):
             i,j = calculate_cells(x,y)
-            if (globals.board[i][j] == -1):
+            if (is_legal_move(i, j)):
                 token_activate(globals.tokens[globals.turn], j, i)
                 globals.board[i][j] = globals.turn
                 change_turn()
