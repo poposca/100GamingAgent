@@ -70,8 +70,24 @@ def check_diag(i,j):
             counter_ur = counter_ur + 1
     return (counter_ur == 2 or counter_dl == 2 or counter_ur + counter_dl >=2)
 
+def check_anti_diag(i,j):
+    counter_ul = 0
+    counter_dr = 0
+
+    while True:
+            if (globals.board[i-counter_dr-1][(j+counter_dr+1)%globals.n] !=  globals.turn or i-counter_dr<=0 or j+counter_dr>=globals.n-1):
+                break
+            else:
+                counter_dr = counter_dr + 1
+    while True:
+            if (globals.board[(i+counter_ul+1)%globals.n][j-counter_ul-1] !=  globals.turn or i+counter_ul>=globals.n-1 or j-counter_ul<=0):
+                break
+            else:
+                counter_ul = counter_ul + 1
+    return (counter_ul == 2 or counter_dr == 2 or counter_ul + counter_dr >=2)
+
 def check_win(i,j):
-    if check_column(i,j) or check_row(i,j) or check_diag(i,j):
+    if check_column(i,j) or check_row(i,j) or check_diag(i,j) or check_anti_diag(i,j):
         print("Game Over")
         print("Won: ", globals.tokens[globals.turn])
     augment_counter()
