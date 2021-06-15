@@ -56,6 +56,7 @@ def on_mouse_press(x, y, button, modifiers):
             if (is_legal_move(i, j)):
                 token_activate(globals.tokens[globals.turn], j, i)
                 globals.board[i][j] = globals.turn
+                check_win(i,j)
                 change_turn()
                 turn_redraw(label2)
         #print(globals.board)

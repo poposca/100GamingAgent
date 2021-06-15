@@ -2,6 +2,7 @@ import pyglet
 import numpy as np
 
 def init():
+    global n
     global turn
     global board
     global background
@@ -15,7 +16,10 @@ def init():
     global tokens
     global on_board_tokens
     global tokens_patch
+    global move_count
 
+    n = 10
+    
     turn = 0    # For all purposes, 0->"O", 1->"X"
     tokens = ["O","X"]
     
@@ -33,4 +37,5 @@ def init():
     cell_size_x     = 64
     cell_size_y     = 52
 
-    board = np.full((10,10), -1, dtype=int)
+    board = np.full((n,n), -1, dtype=int)
+    move_count = 0
