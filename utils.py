@@ -54,8 +54,24 @@ def check_row(i,j):
             counter_r = counter_r + 1
     return (counter_r == 2 or counter_l == 2 or counter_r + counter_l >=2)
 
+def check_diag(i,j):
+    counter_ur = 0
+    counter_dl = 0
+
+    while True:
+        if (globals.board[i-counter_dl-1][j-counter_dl-1] !=  globals.turn or j-counter_dl<=0 or i-counter_dl<=0):
+            break
+        else:
+            counter_dl = counter_dl + 1
+    while True:
+        if (globals.board[(i+counter_ur+1)%globals.n][(j+counter_ur+1)%globals.n] !=  globals.turn or j+counter_ur>=globals.n-1 or i+counter_ur>=globals.n-1):
+            break
+        else:
+            counter_ur = counter_ur + 1
+    return (counter_ur == 2 or counter_dl == 2 or counter_ur + counter_dl >=2)
+
 def check_win(i,j):
-    if check_column(i,j) or check_row(i,j):
+    if check_column(i,j) or check_row(i,j) or check_diag(i,j):
         print("Game Over")
         print("Won: ", globals.tokens[globals.turn])
     augment_counter()
