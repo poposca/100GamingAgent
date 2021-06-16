@@ -1,6 +1,8 @@
 import pyglet
+import numpy as np
 
 def init():
+    global n
     global turn
     global board
     global background
@@ -18,6 +20,10 @@ def init():
     global cont
 
     cont = 0
+    global move_count
+
+    n = 10
+    
     turn = 0    # For all purposes, 0->"O", 1->"X"
     tokens = ["O","X"]
     
@@ -36,4 +42,5 @@ def init():
     cell_size_x     = 64
     cell_size_y     = 52
 
-    board = [[-1 for i in range(10)] for i in range(10)]
+    board = np.full((n,n), -1, dtype=int)
+    move_count = 0

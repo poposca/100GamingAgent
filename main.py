@@ -1,12 +1,17 @@
 import pyglet
 from pyglet.window import mouse
+
 from drawings import *
-from math import floor
+from utils import *
+
+import numpy as np
 from random import *
 import time
-
 import globals
 globals.init()
+
+Q_init_val = 0.6
+Q = {} # Dyctionary with the board state as key and arrays of reward as values
 
 def change_turn():
     globals.turn =  globals.turn ^ 1
@@ -98,9 +103,10 @@ def on_mouse_press(x, y, button, modifiers):
     if button == mouse.LEFT:
         if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y):
             i,j = calculate_cells(x,y)
-            if (globals.board[i][j] == -1):
+            if (is_legal_move(i, j)):
                 token_activate(globals.tokens[globals.turn], j, i)
                 globals.board[i][j] = globals.turn
+                check_win(i,j)
                 change_turn()
                 turn_redraw(label2)
                 globals.cont += 1   # To change turns btw NPC and PLayer
