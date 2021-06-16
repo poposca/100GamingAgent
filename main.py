@@ -2,6 +2,8 @@ import pyglet
 from pyglet.window import mouse
 from drawings import *
 from math import floor
+from random import *
+import time
 
 import globals
 globals.init()
@@ -43,6 +45,38 @@ def calculate_cells(x,y):
     return i,j
 
 #-------------------------------------------
+# Nota: Inicializar un diccionario vacio (state : reward_array), tipo json
+# Cargar un archivo que contenga los estados del tablero despues de la exploracion
+# En caso de no existir el archivo, generar uno mediante la exploracion.
+#-------------------------------------------
+# # append a hash state
+# def addState(self, state):
+#     self.states.append(state)
+
+# # at the end of game, backpropagate and update states value
+# def feedReward(self, reward):
+#     for st in reversed(self.states):
+#         if self.states_value.get(st) is None:
+#             self.states_value[st] = 0
+#         self.states_value[st] += self.lr * (self.decay_gamma * reward - self.states_value[st])
+#         reward = self.states_value[st]
+
+
+def NPC_turn():
+
+    if globals.cont == 1:
+        i,j = 0,0
+        while globals.board[i][j] != -1:
+            x = randint(globals.board_start_x,globals.board_end_x)
+            y = randint(globals.board_start_y,globals.board_end_y)
+            i,j = calculate_cells(x,y)
+        
+        if (globals.board[i][j] == -1):
+            token_activate(globals.tokens[globals.turn], j, i)
+            globals.board[i][j] = globals.turn
+            change_turn()
+            turn_redraw(label2)
+            globals.cont -=1
 
 
 #---EVENTOS---
@@ -52,8 +86,12 @@ def on_draw():
     window.clear()
     background_draw()
     cells_redraw()
+    time.sleep(1) # ------------------------ delay
+    cells_redraw2()
     main_label.draw()
     label2.draw()
+
+
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
@@ -65,7 +103,13 @@ def on_mouse_press(x, y, button, modifiers):
                 globals.board[i][j] = globals.turn
                 change_turn()
                 turn_redraw(label2)
+                globals.cont += 1   # To change turns btw NPC and PLayer
+                NPC_turn()
+                
         #print(globals.board)
+
+#    @window.event
+           
 #--------------------------------------------
 
 pyglet.app.run()

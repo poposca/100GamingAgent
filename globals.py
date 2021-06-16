@@ -14,12 +14,16 @@ def init():
     global tokens
     global on_board_tokens
     global tokens_patch
+    global tokens_patch2
+    global cont
 
+    cont = 0
     turn = 0    # For all purposes, 0->"O", 1->"X"
     tokens = ["O","X"]
     
     on_board_tokens = []
     tokens_patch =  pyglet.graphics.Batch()
+    tokens_patch2 = pyglet.graphics.Batch()
     
     background = pyglet.graphics.OrderedGroup(0)
     foreground = pyglet.graphics.OrderedGroup(1)
