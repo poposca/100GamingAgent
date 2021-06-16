@@ -63,21 +63,18 @@ def cells_redraw2():
 def turn_redraw(turnlabel):
     turnlabel.text = globals.tokens[globals.turn]
 
+#LINEA DE LA VICTORIA SI GANA UN JUGADOR
 def victory_line(i,j):
     mybatch = pyglet.graphics.Batch()
     width = 2    
     color = (250, 30, 30)
 
-    if (globals.board[i][j] == "O" and 
-        globals.board[i+1][j+1] == "O" and
-        globals.board[i+2][j+2] == "O" ):
+    if (globals.board[i][j] == globals.board[i+1][j+1] == globals.board[i+2][j+2] == "O" ):
 
         v_line = shapes.Line(i,j,i+2,j+2,width,color,batch= mybatch,group = globals.foreground)
         v_line.opacity = 222
 
-    elif (globals.board[i][j] == "X" and 
-          globals.board[i+1][j+1] == "X" and
-          globals.board[i+2][j+2] == "X"):
+    elif (globals.board[i][j] == globals.board[i+1][j+1] == globals.board[i+2][j+2] == "X"):
         
         v_line = shapes.Line(i,j,i+2,j+2,width,color,batch= mybatch,group = globals.foreground)
         v_line.opacity = 222
