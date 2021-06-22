@@ -1,3 +1,4 @@
+from numpy.lib.shape_base import expand_dims
 import pyglet
 import numpy as np
 
@@ -18,6 +19,16 @@ def init():
     global tokens_patch
     global tokens_patch2
     global cont
+    global exp_rate
+    global MAX
+    global grad_pointer
+    global sensor
+    global gamma
+    global States
+    global States2
+
+    States = []
+    States2 = []
 
     cont = 0
     global move_count
@@ -44,3 +55,8 @@ def init():
 
     board = np.full((n,n), -1, dtype=int)
     move_count = 0
+
+    exp_rate = 0.3  # treshold to move randomly
+    sensor = np.zeros((8,), dtype=int)
+
+    gamma = 0.9

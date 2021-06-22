@@ -21,6 +21,8 @@ def get_board_hash():
 def augment_counter():
     globals.move_count = globals.move_count + 1
 
+
+# ------------------------- WINS AND REWARS --------------------------
 def check_column(i,j):
     counter_up = 0
     counter_down = 0
@@ -86,11 +88,22 @@ def check_anti_diag(i,j):
                 counter_ul = counter_ul + 1
     return (counter_ul == 2 or counter_dr == 2 or counter_ul + counter_dr >=2)
 
-def check_win(i,j):
+def check_win(i,j,Q):
+    #print(Q)
     if check_column(i,j) or check_row(i,j) or check_diag(i,j) or check_anti_diag(i,j):
         print("Game Over")
         print("Won: ", globals.tokens[globals.turn])
-    augment_counter()
+        if globals.tokens[globals.turn] == "X":
+            result = 1
+            return result
+        else:
+            result = 0
+            return result
+
+    augment_counter() # no se para que sea esto---
     if (globals.move_count == pow(globals.n, 2)):
         print("Game Over")
         print("DRAW")
+        result = -1
+        return result
+    return None

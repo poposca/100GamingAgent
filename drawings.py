@@ -50,8 +50,8 @@ def token_activate(char :str, board_posx :int, board_posy :int):
                               y=globals.board_start_y+(globals.cell_size_y/2)+(globals.cell_size_y*board_posy),
                               anchor_x='center', anchor_y='center',
                               batch = globals.tokens_patch, group=globals.foreground)
-    if globals.turn == 1:
-        label1.batch = globals.tokens_patch2
+    # if globals.turn == 1:
+    #     label1.batch = globals.tokens_patch2
 
     globals.on_board_tokens.append(label1)
 
@@ -59,11 +59,11 @@ def cells_redraw2():
     if len(globals.on_board_tokens) >= 1:
         globals.tokens_patch2.draw()   
 
-
+# --------- GRAFICA EN PANTALLA "O" o "X" DEPENDIENDO DEL TURNO ---------
 def turn_redraw(turnlabel):
     turnlabel.text = globals.tokens[globals.turn]
 
-#LINEA DE LA VICTORIA SI GANA UN JUGADOR
+# ------------------------- LINEA DE LA VICTORIA SI GANA UN JUGADOR ------------
 def victory_line(i,j):
     mybatch = pyglet.graphics.Batch()
     width = 2    
@@ -79,3 +79,7 @@ def victory_line(i,j):
         v_line = shapes.Line(i,j,i+2,j+2,width,color,batch= mybatch,group = globals.foreground)
         v_line.opacity = 222
     mybatch.draw()
+
+
+
+
