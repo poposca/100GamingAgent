@@ -1,5 +1,6 @@
 import pyglet
 from pyglet.window import mouse
+from pyglet import clock
 
 from drawings import *
 from utils import *
@@ -62,6 +63,9 @@ def Reset():
     globals.board = np.full((globals.n,globals.n), -1, dtype=int)
     globals.turn = 0
     globals.States = []
+    globals.on_board_tokens = []
+    globals.tokens_patch = pyglet.graphics.Batch()
+    globals.tokens_patch2 = pyglet.graphics.Batch()
     #stop_game()
 
 
@@ -125,16 +129,14 @@ def NPC_move_AI():
             elif result == 0: # "Won O"
                 Reward(0)          
             else:             # "Draw"
-                Reward(0.1)
+                Reward(0.2)
             for key in Q:
                 print( key ," : ",Q[key])    
-            
-            Reset()
-            state = None
 
-        change_turn()
-        print(globals.turn,globals.tokens[globals.turn])
-        turn_redraw(label2)
+            state = None
+            return True
+        else:
+            return False
         #globals.cont -=1
         # board[i][j] += gamma * max ------ quizas aqui tmbn...
 
@@ -195,6 +197,20 @@ def BOT_move():
 def AI_BOT():
     NPC_move_AI() if globals.turn == 0 else BOT_move()    
 
+
+# ------------------------- GRAFICO RESULTADO DE CADA GAME -------------------------
+def callback_bot(dt):
+    print("No lee el NPC")
+    exit = NPC_move_AI()
+    print("Leyó el NPC")    
+    change_turn()
+    turn_redraw(label2)
+    print("------- Next Turn -----------")
+    print(globals.turn)
+    if(exit):
+        Reset()
+# -----------------------------------------------------------------------------
+
 # ------------------------- GRAFICO RESULTADO DE CADA GAME -------------------------
 # def AI_vs_BOT ():
 #     gamebacth = pyglet.graphics.Batch()
@@ -208,9 +224,6 @@ def on_draw():
     window.clear()
     background_draw()
     cells_redraw()
-    #start_game()
-    #AI_vs_BOT()
-    # time.sleep(0.5) # ------------------------ delay
     cells_redraw2()
     main_label.draw()
     label2.draw()
@@ -223,7 +236,7 @@ def on_draw():
 #class GameEventHandler:
 def on_mouse_press(x, y, button, modifiers):
     if button == mouse.LEFT:
-        if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y):
+        if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y) and (globals.turn==0):
             i,j = calculate_cells(x,y)
             if (is_legal_move(i, j)):
                 token_activate(globals.tokens[globals.turn], j, i)
@@ -231,14 +244,14 @@ def on_mouse_press(x, y, button, modifiers):
                 if check_win(i,j,Q) is not None:
                     for key in Q:
                         print( key ," : ",Q[key])    
-                print(globals.turn,globals.tokens[globals.turn])
-                change_turn()
-                print(globals.turn,globals.tokens[globals.turn])
-                turn_redraw(label2)
-                print("No lee el NPC")
-                NPC_move_AI()
-                print("leyo el NPC")
-                print("------- Next Turn -----------")
+                    Reset()
+                else:
+                    change_turn()
+                    turn_redraw(label2)
+                    print("------- Next Turn -----------")
+                #print(globals.turn,globals.tokens[globals.turn])
+                #print(globals.turn,globals.tokens[globals.turn])
+                    clock.schedule_once(callback_bot, 0.5)  
                 #window.clear() # NOSE COMO LIMPIAR LA PANTALLA PARA LA NUEVA PARTIDA
                 #globals.cont += 1   # To change turns btw NPC and PLayer
                 

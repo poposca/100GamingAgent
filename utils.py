@@ -54,6 +54,8 @@ def check_row(i,j):
             break
         else:
             counter_r = counter_r + 1
+    #print("Left: ", counter_l )
+    #print("Right: ", counter_r)
     return (counter_r == 2 or counter_l == 2 or counter_r + counter_l >=2)
 
 def check_diag(i,j):
@@ -89,7 +91,6 @@ def check_anti_diag(i,j):
     return (counter_ul == 2 or counter_dr == 2 or counter_ul + counter_dr >=2)
 
 def check_win(i,j,Q):
-    #print(Q)
     if check_column(i,j) or check_row(i,j) or check_diag(i,j) or check_anti_diag(i,j):
         print("Game Over")
         print("Won: ", globals.tokens[globals.turn])
@@ -106,4 +107,5 @@ def check_win(i,j,Q):
         print("DRAW")
         result = -1
         return result
-    return None
+    else:
+        return None
