@@ -1,6 +1,10 @@
 import globals
 from math import floor
 
+def change_turn():
+    globals.turn =  globals.turn ^ 1
+    return globals.turn
+
 def calculate_cells(x,y):
     new_x = x - globals.board_start_x
     new_y = y - globals.board_start_y
@@ -13,10 +17,10 @@ def calculate_cells(x,y):
 def is_legal_move(pos_i, pos_j):
     return globals.board[pos_i][pos_j] == -1
 
-def get_board_hash():
-    temp_array  = globals.board.flatten()
+def get_board_hash(t_board):
+    temp_array  = t_board.flatten()
     temp_string = "".join(map(str, temp_array))
-    print(temp_string)
+    return temp_string
 
 def augment_counter():
     globals.move_count = globals.move_count + 1
@@ -90,7 +94,7 @@ def check_anti_diag(i,j):
                 counter_ul = counter_ul + 1
     return (counter_ul == 2 or counter_dr == 2 or counter_ul + counter_dr >=2)
 
-def check_win(i,j,Q):
+def check_win(i,j):
     if check_column(i,j) or check_row(i,j) or check_diag(i,j) or check_anti_diag(i,j):
         print("Game Over")
         print("Won: ", globals.tokens[globals.turn])

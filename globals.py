@@ -26,6 +26,7 @@ def init():
     global gamma
     global States
     global States2
+    global Q
 
     States = []
     States2 = []

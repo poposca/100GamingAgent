@@ -4,21 +4,18 @@ from pyglet import clock
 
 from drawings import *
 from utils import *
+from game_io import load_Q, save_Q
 
 import numpy as np
 from random import *
 import time
+
 import globals
 globals.init()
 
-
 Q_init_val = 0.6
+load_Q()
 # ---------- Q MATRIX - EXPLORATION {[board state]:reward]} ----------------
-Q = {} # Dyctionary with the board state as key and arrays of reward as values
-
-def change_turn():
-    globals.turn =  globals.turn ^ 1
-    return globals.turn
 
 #Definición de Ventana: Tamaño, nombres y color de fondo
 #--------------------------------------------
@@ -40,19 +37,6 @@ label2 = pyglet.text.Label('O',
                               x=(window.width//2 + 8), y=24,
                               anchor_x='center', anchor_y='center', group=globals.foreground)
 #--------------------------------------------
-
-#---Utils---
-#-------------------------------------------
-def calculate_cells(x,y):
-    new_x = x - globals.board_start_x
-    new_y = y - globals.board_start_y
-
-    j = floor(new_x / globals.cell_size_x)
-    i = floor(new_y / globals.cell_size_y)
-    
-    return i,j
-
-#-------------------------------------------
 # Nota: Inicializar un diccionario vacio (state : reward_array), tipo json
 # Cargar un archivo que contenga los estados del tablero despues de la exploracion
 # En caso de no existir el archivo, generar uno mediante la exploracion.
@@ -75,10 +59,10 @@ def Reset():
 def Reward(reward):
     States = reversed(globals.States)
     for state in States:
-        if Q.get(state) is None:
-            Q[state] = Q_init_val
-        Q[state] = Q[state] + 0.2 * (globals.gamma * reward - Q[state])
-        reward = Q[state]
+        if globals.Q.get(state) is None:
+            globals.Q[state] = Q_init_val
+        globals.Q[state] = globals.Q[state] + 0.2 * (globals.gamma * reward - globals.Q[state])
+        reward = globals.Q[state]
 
 
 # ------------------------------------------------------
@@ -106,8 +90,8 @@ def NPC_move_AI():
             for n in range(globals.n):
                 next_board = globals.board.copy() # to analyze if the next move is the best
                 next_board[m][n] = globals.turn
-                next_board_str =  str(next_board.reshape(-1))
-                value = 0 if Q.get(next_board_str) is None else Q.get(next_board_str)
+                next_board_str =  get_board_hash(next_board)
+                value = 0 if globals.Q.get(next_board_str) is None else globals.Q.get(next_board_str)
                 
                 #print("value: ",value)
                 if is_legal_move(m,n) and value >= Max_value: 
@@ -120,9 +104,9 @@ def NPC_move_AI():
         print(globals.turn,globals.tokens[globals.turn])
         token_activate(globals.tokens[globals.turn], j, i)
         globals.board[i][j] = globals.turn
-        state = str(globals.board.reshape(-1))
+        state = get_board_hash(globals.board)
         globals.States.append(state)
-        result = check_win(i,j,Q)
+        result = check_win(i,j)
         if result is not None:
             if result == 1: # "Won X"
                 Reward(1)        
@@ -130,8 +114,9 @@ def NPC_move_AI():
                 Reward(0)          
             else:             # "Draw"
                 Reward(0.2)
-            for key in Q:
-                print( key ," : ",Q[key])    
+            for key in globals.Q:
+                print( key ," : ", globals.Q[key])
+            save_Q()    
 
             state = None
             return True
@@ -241,9 +226,9 @@ def on_mouse_press(x, y, button, modifiers):
             if (is_legal_move(i, j)):
                 token_activate(globals.tokens[globals.turn], j, i)
                 globals.board[i][j] = globals.turn
-                if check_win(i,j,Q) is not None:
-                    for key in Q:
-                        print( key ," : ",Q[key])    
+                if check_win(i,j) is not None:
+                    for key in globals.Q:
+                        print( key ," : ", globals.Q[key])    
                     Reset()
                 else:
                     change_turn()
