@@ -223,31 +223,33 @@ def on_draw():
         main_label.draw()
         label2.draw()
     elif globals.paused == True:
+        window.clear()
         pause_label.draw()
 # ----------------------- HUMAN TURN ------------------------------------
 
 @window.event
 #class GameEventHandler:
 def on_mouse_press(x, y, button, modifiers):
-    if button == mouse.LEFT:
-        if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y) and (globals.turn==0):
-            i,j = calculate_cells(x,y)
-            if (is_legal_move(i, j)):
-                token_activate(globals.tokens[globals.turn], j, i)
-                globals.board[i][j] = globals.turn
-                result = check_win(i,j)
-                if result is not None:
-                    end_Game(result)  
-                    Reset()
-                else:
-                    change_turn()
-                    turn_redraw(label2)
-                    print("------- Next Turn -----------")
-                #print(globals.turn,globals.tokens[globals.turn])
-                #print(globals.turn,globals.tokens[globals.turn])
-                    clock.schedule_once(callback_bot, 0.3)  
-                #window.clear() # NOSE COMO LIMPIAR LA PANTALLA PARA LA NUEVA PARTIDA
-                #globals.cont += 1   # To change turns btw NPC and PLayer
+    if globals.paused == False:
+        if button == mouse.LEFT:
+            if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y) and (globals.turn==0):
+                i,j = calculate_cells(x,y)
+                if (is_legal_move(i, j)):
+                    token_activate(globals.tokens[globals.turn], j, i)
+                    globals.board[i][j] = globals.turn
+                    result = check_win(i,j)
+                    if result is not None:
+                        end_Game(result)  
+                        Reset()
+                    else:
+                        change_turn()
+                        turn_redraw(label2)
+                        print("------- Next Turn -----------")
+                    #print(globals.turn,globals.tokens[globals.turn])
+                    #print(globals.turn,globals.tokens[globals.turn])
+                        clock.schedule_once(callback_bot, 0.3)  
+                    #window.clear() # NOSE COMO LIMPIAR LA PANTALLA PARA LA NUEVA PARTIDA
+                    #globals.cont += 1   # To change turns btw NPC and PLayer
 
 @window.event
 def on_key_press(symbol, modifiers):
