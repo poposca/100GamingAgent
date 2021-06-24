@@ -1,5 +1,6 @@
 import pyglet
 from pyglet.window import mouse
+from pyglet.window import key
 from pyglet import clock
 
 from drawings import *
@@ -36,6 +37,13 @@ label2 = pyglet.text.Label('O',
                               font_size=16,
                               x=(window.width//2 + 8), y=24,
                               anchor_x='center', anchor_y='center', group=globals.foreground)
+
+pause_label = pyglet.text.Label('PAUSED',
+                              font_name='Noto Sans',
+                              font_size=24,
+                              x=(window.width//2), y=(window.height//2),
+                              anchor_x='center', anchor_y='center')
+                            
 #--------------------------------------------
 # Nota: Inicializar un diccionario vacio (state : reward_array), tipo json
 # Cargar un archivo que contenga los estados del tablero despues de la exploracion
@@ -207,15 +215,15 @@ def callback_bot(dt):
 #--------------------------------------------
 @window.event
 def on_draw():
-    window.clear()
-    background_draw()
-    cells_redraw()
-    cells_redraw2()
-    main_label.draw()
-    label2.draw()
-
-
-
+    if globals.paused == False:
+        window.clear()
+        background_draw()
+        cells_redraw()
+        cells_redraw2()
+        main_label.draw()
+        label2.draw()
+    elif globals.paused == True:
+        pause_label.draw()
 # ----------------------- HUMAN TURN ------------------------------------
 
 @window.event
@@ -240,8 +248,18 @@ def on_mouse_press(x, y, button, modifiers):
                     clock.schedule_once(callback_bot, 0.3)  
                 #window.clear() # NOSE COMO LIMPIAR LA PANTALLA PARA LA NUEVA PARTIDA
                 #globals.cont += 1   # To change turns btw NPC and PLayer
-                
-        #print(globals.board)
+
+@window.event
+def on_key_press(symbol, modifiers):
+    if globals.turn == 0:
+        if globals.paused == False:
+            if symbol == key.P:
+                globals.paused = True
+        if globals.paused == True:
+            if symbol == key.SPACE:
+                #print("Space key detected")
+                globals.paused = False
+
 #game_handler = GameEventHandler()
 
 # def start_game():

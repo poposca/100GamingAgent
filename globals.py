@@ -5,6 +5,7 @@ import numpy as np
 def init():
     global n
     global turn
+    global paused
     global board
     global background
     global foreground
@@ -35,7 +36,8 @@ def init():
     global move_count
 
     n = 10
-    
+
+    paused = False
     turn = 0    # For all purposes, 0->"O", 1->"X"
     tokens = ["O","X"]
     
