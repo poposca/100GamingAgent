@@ -64,6 +64,16 @@ def Reward(reward):
         globals.Q[state] = globals.Q[state] + 0.2 * (globals.gamma * reward - globals.Q[state])
         reward = globals.Q[state]
 
+def end_Game(result):
+    if result == 1: # "Won X"
+        Reward(1)        
+    elif result == 0: # "Won O"
+        Reward(0)          
+    else:             # "Draw"
+        Reward(0.2)
+    for key in globals.Q:
+        print( key ," : ", globals.Q[key])
+    save_Q()    
 
 # ------------------------------------------------------
 # For NPC actions, we have two cases, 30% move 
@@ -108,16 +118,7 @@ def NPC_move_AI():
         globals.States.append(state)
         result = check_win(i,j)
         if result is not None:
-            if result == 1: # "Won X"
-                Reward(1)        
-            elif result == 0: # "Won O"
-                Reward(0)          
-            else:             # "Draw"
-                Reward(0.2)
-            for key in globals.Q:
-                print( key ," : ", globals.Q[key])
-            save_Q()    
-
+            end_Game(result)
             state = None
             return True
         else:
@@ -226,9 +227,9 @@ def on_mouse_press(x, y, button, modifiers):
             if (is_legal_move(i, j)):
                 token_activate(globals.tokens[globals.turn], j, i)
                 globals.board[i][j] = globals.turn
-                if check_win(i,j) is not None:
-                    for key in globals.Q:
-                        print( key ," : ", globals.Q[key])    
+                result = check_win(i,j)
+                if result is not None:
+                    end_Game(result)  
                     Reset()
                 else:
                     change_turn()
@@ -236,7 +237,7 @@ def on_mouse_press(x, y, button, modifiers):
                     print("------- Next Turn -----------")
                 #print(globals.turn,globals.tokens[globals.turn])
                 #print(globals.turn,globals.tokens[globals.turn])
-                    clock.schedule_once(callback_bot, 0.5)  
+                    clock.schedule_once(callback_bot, 0.3)  
                 #window.clear() # NOSE COMO LIMPIAR LA PANTALLA PARA LA NUEVA PARTIDA
                 #globals.cont += 1   # To change turns btw NPC and PLayer
                 

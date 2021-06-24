@@ -6,6 +6,7 @@ def load_Q():
     if (path.exists("npc_data.json")):
         with open("npc_data.json", "r") as infile: 
             globals.Q = json.loads(infile.read())
+        print("Loaded Q: ", globals.Q)
     else:
         globals.Q = {}
         
