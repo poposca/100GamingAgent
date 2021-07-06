@@ -54,6 +54,7 @@ pause_label = pyglet.text.Label('PAUSED',
 def Reset():
     globals.board = np.full((globals.n,globals.n), -1, dtype=int)
     globals.turn = 0
+    globals.move_count = 0
     globals.States = []
     globals.on_board_tokens = []
     globals.tokens_patch = pyglet.graphics.Batch()

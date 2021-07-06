@@ -62,4 +62,4 @@ def init():
     exp_rate = 0.3  # treshold to move randomly
     sensor = np.zeros((8,), dtype=int)
 
-    gamma = 0.9
+    gamma = 0.8
