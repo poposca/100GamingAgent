@@ -35,7 +35,8 @@ def init():
     cont = 0
     global move_count
 
-    n = 10
+    #n = 10
+    n = 5
 
     paused = False
     turn = 0    # For all purposes, 0->"O", 1->"X"
@@ -53,8 +54,10 @@ def init():
     board_start_y   = 60
     board_end_y     = 580
     
-    cell_size_x     = 64
-    cell_size_y     = 52
+    #cell_size_x     = 64
+    cell_size_x = 128
+    #cell_size_y     = 52
+    cell_size_y = 104
 
     board = np.full((n,n), -1, dtype=int)
     move_count = 0

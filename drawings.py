@@ -15,7 +15,7 @@ def background_draw():
     vertical_lines = []
     horizontal_lines = []
 
-    for i in range(11):
+    for i in range(globals.n + 1):
         # Vertical Line
         vco_x1 = globals.board_start_x + (globals.cell_size_x*i)
         vco_x2 = globals.board_start_x + (globals.cell_size_x*i)
@@ -45,7 +45,7 @@ def token_activate(char :str, board_posx :int, board_posy :int):
         mybatch = globals.tokens_patch2
     label1 = pyglet.text.Label(char,
                               font_name='Noto Sans',
-                              font_size=24,
+                              font_size=32,
                               x=globals.board_start_x+(globals.cell_size_x/2)+(globals.cell_size_x*board_posx),
                               y=globals.board_start_y+(globals.cell_size_y/2)+(globals.cell_size_y*board_posy),
                               anchor_x='center', anchor_y='center',

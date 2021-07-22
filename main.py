@@ -94,7 +94,7 @@ def NPC_move_AI():
 
     #if globals.cont == 1:
     if np.random.uniform(0,1) <= globals.exp_rate:
-        i,j = randint(0,9),randint(0,9)
+        i,j = randint(0,(globals.n-1)),randint(0,(globals.n-1))
         while not (is_legal_move(i, j)):
             x = randint(globals.board_start_x,globals.board_end_x)
             y = randint(globals.board_start_y,globals.board_end_y)

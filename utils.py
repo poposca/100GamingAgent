@@ -41,7 +41,7 @@ def check_column(i,j):
             break
         else:
             counter_up = counter_up + 1
-    return (counter_up == 2 or counter_down == 2 or counter_up + counter_down >=2)
+    return (counter_up == (globals.n-2) or counter_down == (globals.n-2) or counter_up + counter_down >=(globals.n-2))
     
 
 def check_row(i,j):
@@ -58,9 +58,9 @@ def check_row(i,j):
             break
         else:
             counter_r = counter_r + 1
-    #print("Left: ", counter_l )
-    #print("Right: ", counter_r)
-    return (counter_r == 2 or counter_l == 2 or counter_r + counter_l >=2)
+    print("Left: ", counter_l )
+    print("Right: ", counter_r)
+    return (counter_r == (globals.n-2) or counter_l == (globals.n-2) or counter_r + counter_l >=(globals.n-2))
 
 def check_diag(i,j):
     counter_ur = 0
@@ -76,7 +76,7 @@ def check_diag(i,j):
             break
         else:
             counter_ur = counter_ur + 1
-    return (counter_ur == 2 or counter_dl == 2 or counter_ur + counter_dl >=2)
+    return (counter_ur == (globals.n-2) or counter_dl == (globals.n-2) or counter_ur + counter_dl >=(globals.n-2))
 
 def check_anti_diag(i,j):
     counter_ul = 0
@@ -92,7 +92,7 @@ def check_anti_diag(i,j):
                 break
             else:
                 counter_ul = counter_ul + 1
-    return (counter_ul == 2 or counter_dr == 2 or counter_ul + counter_dr >=2)
+    return (counter_ul == (globals.n-2) or counter_dr == (globals.n-2) or counter_ul + counter_dr >=(globals.n-2))
 
 def check_win(i,j):
     if check_column(i,j) or check_row(i,j) or check_diag(i,j) or check_anti_diag(i,j):
