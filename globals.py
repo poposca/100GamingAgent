@@ -62,7 +62,7 @@ def init():
     board = np.full((n,n), -1, dtype=int)
     move_count = 0
 
-    exp_rate = 0.3  # treshold to move randomly
+    exp_rate = 0.3 # treshold to move randomly
     sensor = np.zeros((8,), dtype=int)
 
     gamma = 0.8

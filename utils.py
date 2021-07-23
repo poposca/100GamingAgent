@@ -15,7 +15,10 @@ def calculate_cells(x,y):
     return i,j
 
 def is_legal_move(pos_i, pos_j):
-    return globals.board[pos_i][pos_j] == -1
+    if pos_i<globals.n and pos_j<globals.n:
+        return globals.board[pos_i][pos_j] == -1
+    else:
+        return False
 
 def get_board_hash(t_board):
     temp_array  = t_board.flatten()
@@ -105,7 +108,7 @@ def check_win(i,j):
             result = 0
             return result
 
-    augment_counter() # no se para que sea esto---
+    augment_counter() # Augment the total turns of the round
     if (globals.move_count == pow(globals.n, 2)):
         print("Game Over")
         print("DRAW")
