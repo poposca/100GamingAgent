@@ -28,6 +28,9 @@ def init():
     global States
     global States2
     global Q
+    global recycler
+
+    recycler = 0
 
     States = []
     States2 = []
@@ -62,7 +65,7 @@ def init():
     board = np.full((n,n), -1, dtype=int)
     move_count = 0
 
-    exp_rate = 0.3 # treshold to move randomly
+    exp_rate = 0.4 # treshold to move randomly
     sensor = np.zeros((8,), dtype=int)
 
     gamma = 0.8

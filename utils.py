@@ -61,8 +61,8 @@ def check_row(i,j):
             break
         else:
             counter_r = counter_r + 1
-    print("Left: ", counter_l )
-    print("Right: ", counter_r)
+    #print("Left: ", counter_l )
+    #print("Right: ", counter_r)
     return (counter_r == (globals.n-2) or counter_l == (globals.n-2) or counter_r + counter_l >=(globals.n-2))
 
 def check_diag(i,j):

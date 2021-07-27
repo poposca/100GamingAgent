@@ -18,29 +18,33 @@ Q_init_val = 0.6
 load_Q()
 
 P = {}
+
+training = True #To alternate between training and testing
+
 # ---------- Q MATRIX - EXPLORATION {[board state]:reward]} ----------------
 
 #Definición de Ventana: Tamaño, nombres y color de fondo
 #--------------------------------------------
-window = pyglet.window.Window(800, 600, "10x10 Tic Tac Toe")
-pyglet.gl.glClearColor(0.12,0.12,0.16,1)
+if not training:
+    window = pyglet.window.Window(800, 600, "10x10 Tic Tac Toe")
+    pyglet.gl.glClearColor(0.12,0.12,0.16,1)
 #--------------------------------------------
 
 #Objetos de texto para mostrar turno actual
 #--------------------------------------------
-main_label = pyglet.text.Label('TURN: ',
+    main_label = pyglet.text.Label('TURN: ',
                           font_name='Noto Sans',
                           font_size=16,
                           x=(window.width//2 -32), y=24,
                           anchor_x='center', anchor_y='center', group=globals.background)
                           
-label2 = pyglet.text.Label('O',
+    label2 = pyglet.text.Label('O',
                               font_name='Noto Sans',
                               font_size=16,
                               x=(window.width//2 + 8), y=24,
                               anchor_x='center', anchor_y='center', group=globals.foreground)
 
-pause_label = pyglet.text.Label('PAUSED',
+    pause_label = pyglet.text.Label('PAUSED',
                               font_name='Noto Sans',
                               font_size=24,
                               x=(window.width//2), y=(window.height//2),
@@ -84,7 +88,10 @@ def end_Game(result, states, knowledge):
         Reward(0.2, states, knowledge)
     #for key in globals.Q:
     #    print( key ," : ", globals.Q[key])
-    save_Q()
+    globals.recycler = globals.recycler + 1
+    if (globals.recycler % 11) == 10:
+        globals.recycler=0    
+        save_Q()
 
 
 def random_Move():
@@ -190,91 +197,86 @@ def callback_bot(dt):
     exit = NPC_move_AI()
     print("Leyó el NPC")    
     change_turn()
-    turn_redraw(label2)
+    if not training:
+        turn_redraw(label2)
     print("------- Next Turn -----------")
     print(globals.turn)
-    if(exit):
-        Reset()
-        clock.schedule_once(callback_bot2, 0.08) 
-    else:
-        clock.schedule_once(callback_bot2, 0.05) 
+    if training:
+        if(exit):
+            Reset()
+            clock.schedule_once(callback_bot2, 0.05) 
+        else:
+            clock.schedule_once(callback_bot2, 0.03) 
 
 def callback_bot2(dt):
     print("No lee el NPC")
     exit = BOT_move()
     print("Leyó el NPC")    
     change_turn()
-    turn_redraw(label2)
+    #turn_redraw(label2)
     print("------- Next Turn -----------")
     print(globals.turn)
     if(exit):
         Reset()
-        clock.schedule_once(callback_bot2, 0.08) 
+        clock.schedule_once(callback_bot2, 0.05) 
     else:
-        clock.schedule_once(callback_bot, 0.05) 
+        clock.schedule_once(callback_bot, 0.03) 
 # -----------------------------------------------------------------------------
 
 #---EVENTOS---
 #--------------------------------------------
-@window.event
-def on_draw():
-    if globals.paused == False:
-        window.clear()
-        background_draw()
-        cells_redraw()
-        cells_redraw2()
-        main_label.draw()
-        label2.draw()
-    elif globals.paused == True:
-        window.clear()
-        pause_label.draw()
+if not training:
+    @window.event
+    def on_draw():
+        if globals.paused == False:
+            window.clear()
+            background_draw()
+            cells_redraw()
+            cells_redraw2()
+            main_label.draw()
+            label2.draw()
+        elif globals.paused == True:
+            window.clear()
+            pause_label.draw()
 # ----------------------- HUMAN TURN ------------------------------------
 
-#@window.event
-#class GameEventHandler:
-#def on_mouse_press(x, y, button, modifiers):
-    #if globals.paused == False:
-    #    if button == mouse.LEFT:
-    #        if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y) and (globals.turn==0):
-    #            i,j = calculate_cells(x,y)
-    #            if (is_legal_move(i, j)):
-    #                token_activate(globals.tokens[globals.turn], j, i)
-    #                globals.board[i][j] = globals.turn
-    #                result = check_win(i,j)
-    #                if result is not None:
-    #                    end_Game(result, globals.States, globals.Q )
-    #                    Reset()
-    #                else:
-    #                    change_turn()
-    ##                    turn_redraw(label2)
-    #                    print("------- Next Turn -----------")
-                    #print(globals.turn,globals.tokens[globals.turn])
-                    #print(globals.turn,globals.tokens[globals.turn])
-    #                    clock.schedule_once(callback_bot, 0.3)  
-                    #window.clear() # NOSE COMO LIMPIAR LA PANTALLA PARA LA NUEVA PARTIDA
-                    #globals.cont += 1   # To change turns btw NPC and PLayer
-
-@window.event
-def on_key_press(symbol, modifiers):
-    if globals.turn == 0:
+    @window.event
+    def on_mouse_press(x, y, button, modifiers):
         if globals.paused == False:
-            if symbol == key.P:
-                globals.paused = True
-        if globals.paused == True:
-            if symbol == key.SPACE:
-                #print("Space key detected")
-                globals.paused = False
+            if button == mouse.LEFT:
+                if (globals.board_start_x<x<globals.board_end_x) and (globals.board_start_y<y<globals.board_end_y) and (globals.turn==0):
+                    i,j = calculate_cells(x,y)
+                    if (is_legal_move(i, j)):
+                        token_activate(globals.tokens[globals.turn], j, i)
+                        globals.board[i][j] = globals.turn
+                        result = check_win(i,j)
+                        if result is not None:
+                            end_Game(result, globals.States, globals.Q )
+                            Reset()
+                        else:
+                            change_turn()
+                            turn_redraw(label2)
+                            print("------- Next Turn -----------")
+                       #print(globals.turn,globals.tokens[globals.turn])
+                       #print(globals.turn,globals.tokens[globals.turn])
+                            clock.schedule_once(callback_bot, 0.3)  
+                        #window.clear() # NOSE COMO LIMPIAR LA PANTALLA PARA LA NUEVA PARTIDA
+                        #globals.cont += 1   # To change turns btw NPC and PLayer
 
-#game_handler = GameEventHandler()
+    @window.event
+    def on_key_press(symbol, modifiers):
+        if globals.turn == 0:
+            if globals.paused == False:
+                if symbol == key.P:
+                    globals.paused = True
+            if globals.paused == True:
+                if symbol == key.SPACE:
+                    #print("Space key detected")
+                    globals.paused = False
 
-# def start_game():
-#     window.push_handlers(game_handler)
-
-# def stop_game():
-#     window.pop_handlers()    
-    #    @window.event
-            
 #--------------------------------------------
 
-clock.schedule_once(callback_bot2, 0.3)
+if training:    
+    clock.schedule_once(callback_bot2, 0.3)
+
 pyglet.app.run()
